@@ -1,0 +1,15 @@
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using WebModels.Entities;
+
+namespace WebModels
+{
+    public class AppDbContext : IdentityDbContext<UserAccount>
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
+        {
+
+        }
+        public DbSet<UserAccount> ApplicationUser { get; set; }
+    }
+}
