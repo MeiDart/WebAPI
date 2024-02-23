@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebModels.ResponseModels
 {
-    public class UserResponseModelForLogIn
+    public class UserResponseModelForLogInSignUp
     {
         public string HoTen { get; set; }
         public string UserName { get; set; }

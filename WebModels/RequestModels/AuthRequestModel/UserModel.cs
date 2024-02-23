@@ -14,6 +14,8 @@ namespace WebModels.RequestModels.AuthRequestModel
 
         [Required(ErrorMessage = Constants.Commons.FIELD_REQUIRED)]
         public string Password { get; set; }
+        
+        public string HoTen { get; set; }
 
     }
 }

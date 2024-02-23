@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text;
 using WebAPI.Extensions;
 using WebCommon.Constants;
 using WebModels;
@@ -24,7 +26,19 @@ options.SignIn.RequireConfirmedAccount = true)
 // config jwt authentication
 
 builder.Services.AddAuthentication("Bearer")
-.AddJwtBearer();
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidAudience = builder.Configuration[Constants.AppSettingKeys.JWT_VALIDAUDIENCE],
+        ValidIssuer = builder.Configuration[Constants.AppSettingKeys.JWT_VALIDISSUER],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration[Constants.AppSettingKeys.JWT_SECRET]))
+    };
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 

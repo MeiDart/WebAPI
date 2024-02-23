@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace WebBusiness.AuthService
 {
     public interface IAuthService
     {
-        public Task Register (UserModel userInfo);
+        public Task<IdentityResult> Register (UserModel userInfo);
         public Task Login (UserModel userInfo);
     }
 }

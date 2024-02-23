@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebBusiness.AuthService;
+using WebCommon.Constants;
 using WebModels;
 using WebModels.Entities;
+using WebModels.RequestModels.AuthRequestModel;
 using WebModels.ResponseModels;
 
 namespace WebAPI.Controllers
@@ -10,20 +13,25 @@ namespace WebAPI.Controllers
     [ApiController]
     public class AppUserController : ControllerBase
     {
-        private AppDbContext _dbContext { get; set; }
-        public AppUserController(AppDbContext dbContext)
+        private readonly IAuthService _authService;
+        public AppUserController(IAuthService authService)
         {
-            _dbContext = dbContext;
+            _authService = authService;
         }
-        [HttpGet]
-        public List<UserResponseModelForLogIn> GetUser()
+      
+
+        [HttpPost]
+        public async Task<IActionResult> Register(UserModel userinfo)
         {
-            return _dbContext.ApplicationUser.Select(x=>new UserResponseModelForLogIn
+            var res = await _authService.Register(userinfo);
+            if(res.Succeeded)
             {
-                HoTen = x.HoTen,
-                UserName =x.UserName,
-                Id = x.Id
-            }).ToList();        
+                return Ok(res);
+            }
+            else
+            {
+                return BadRequest(res);
+            }
         }
     }
 }
