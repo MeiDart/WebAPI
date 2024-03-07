@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebBusiness.AuthService;
 using WebCommon.Constants;
@@ -9,7 +10,7 @@ using WebModels.ResponseModels;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Constants.Controller.DEFAULT_ROUTE_CONTROLLER)]
     [ApiController]
     public class AppUserController : ControllerBase
     {
@@ -33,5 +34,29 @@ namespace WebAPI.Controllers
                 return BadRequest(res);
             }
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginRequest userinfo)
+        {
+            var res = await _authService.Login(userinfo);
+            if (res.IsSucceed)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return BadRequest(res);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetData()
+        {
+            var x = 1 + 1;
+            return Ok(x);
+        }
+
     }
 }

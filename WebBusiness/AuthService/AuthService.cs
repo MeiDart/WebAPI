@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using WebBusiness.TokenService;
 using WebCommon.Constants;
 using WebModels;
 using WebModels.Entities;
 using WebModels.RequestModels.AuthRequestModel;
+using WebModels.ResponseModels.AuthModel;
 
 namespace WebBusiness.AuthService
 {
@@ -11,13 +13,15 @@ namespace WebBusiness.AuthService
         private readonly UserManager<UserAccount> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
-        public AuthService(UserManager<UserAccount> userManager, RoleManager<IdentityRole> roleManager, AppDbContext appDbContext)
+        private readonly ITokenService _tokenService;
+        public AuthService(UserManager<UserAccount> userManager, RoleManager<IdentityRole> roleManager, AppDbContext appDbContext, ITokenService tokenService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = appDbContext;
+            _tokenService = tokenService;
         }
-        public async Task Login(UserModel userInfo)
+        public async Task<LoginResponse> Login(LoginRequest userInfo)
         {
             var currentUser = await _userManager.FindByNameAsync(userInfo.UserName);
             if (currentUser == null)
@@ -27,14 +31,25 @@ namespace WebBusiness.AuthService
             if(await _userManager.CheckPasswordAsync(currentUser, userInfo.Password))
             {
                 var rolesUser = _userManager.GetRolesAsync(currentUser);
-                
-                //var gerenrateToken()
+                var res = new LoginResponse
+                {
+                    Message = "Đăng nhập thành công",
+                    Token = _tokenService.GenerateToken(currentUser),
+                    IsSucceed = true
+                };
+                return res;
             }
+            return new LoginResponse
+            {
+                Message = "Tài khoản hoặc mật khẩu không đúng",
+                Token = "",
+                IsSucceed = false
+            };
         }
 
         public async Task<IdentityResult> Register(UserModel userInfo)
         {
-            if(_userManager.FindByNameAsync(userInfo.UserName) != null)
+            if(await _userManager.FindByNameAsync(userInfo.UserName) != null)
             {
                 throw new Exception(Constants.Commons.USER_ALREADY_EXIST);
             }

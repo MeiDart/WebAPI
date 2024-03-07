@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using WebAPI.Extensions;
+using WebAPI.Middleware;
 using WebCommon.Constants;
 using WebModels;
 using WebModels.Entities;
@@ -25,7 +28,12 @@ options.SignIn.RequireConfirmedAccount = true)
 
 // config jwt authentication
 
-builder.Services.AddAuthentication("Bearer")
+builder.Services.AddAuthentication(options=>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
 .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -91,6 +99,8 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 // use Service
+builder.Services.AddTransient<ExeptionHandleMiddleware>();
+builder.Services.AddTransient<JwtMiddleware>();
 builder.Services.ServicesRegister();
 var app = builder.Build();
 
@@ -102,7 +112,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<ExeptionHandleMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

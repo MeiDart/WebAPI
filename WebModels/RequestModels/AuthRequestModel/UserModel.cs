@@ -16,6 +16,7 @@ namespace WebModels.RequestModels.AuthRequestModel
         public string Password { get; set; }
         
         public string HoTen { get; set; }
+        public string SDT { get; set; }
 
     }
 }

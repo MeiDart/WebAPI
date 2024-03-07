@@ -15,4 +15,8 @@
     <ProjectReference Include="..\WebModels\WebModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Reposito\" />
+  </ItemGroup>
+
 </Project>

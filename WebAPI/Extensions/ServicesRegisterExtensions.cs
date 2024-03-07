@@ -1,5 +1,7 @@
 ﻿using WebBusiness;
 using WebBusiness.AuthService;
+using WebBusiness.TokenService;
+using WebBusiness.UserService;
 
 namespace WebAPI.Extensions
 {
@@ -8,6 +10,8 @@ namespace WebAPI.Extensions
         public static void ServicesRegister(this IServiceCollection services)
         {
             services.AddTransient<IAuthService,AuthService>();
+            services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<IUserService,UserService>();
         }
     }
 }

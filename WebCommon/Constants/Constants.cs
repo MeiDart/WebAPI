@@ -15,6 +15,7 @@ namespace WebCommon.Constants
             public const string JWT_VALIDAUDIENCE = "JWT:ValidAudience";
             public const string JWT_VALIDISSUER = "JWT:ValidIssuer";
             public const string JWT_SECRET = "JWT:Secret";
+            public const string JWT_EXPIREMINUTES = "JWT:RefreshExpireMinute";
 
         }
 
