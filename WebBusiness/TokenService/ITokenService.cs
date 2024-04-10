@@ -9,6 +9,6 @@ namespace WebBusiness.TokenService
 {
     public interface ITokenService
     {
-        string GenerateToken(UserAccount user);
+        Task<string> GenerateToken(UserAccount user);
     }
 }

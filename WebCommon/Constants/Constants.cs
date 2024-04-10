@@ -23,13 +23,18 @@ namespace WebCommon.Constants
         {
             public const string DEFAULT_ROUTE_CONTROLLER = "api/[controller]/[action]";
         }
-
+        public class Role
+        {
+            public const string ADMIN = "Admin";
+            public const string USER = "User";
+        }
         public class Commons
         {
             public const string EMAIL_INVALID = "Email invalid !";
             public const string FIELD_REQUIRED = "This field is required";
             public const string USER_ALREADY_EXIST = "User already exist";
             public const string USER_NOT_EXIST = "User not exist";
+            public const string ITEM_NOT_EXIST = "{0} not exist";
         }
     }
 }

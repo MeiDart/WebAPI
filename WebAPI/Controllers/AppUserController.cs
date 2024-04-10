@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebAPI.CustomAttribute;
 using WebBusiness.AuthService;
 using WebCommon.Constants;
-using WebModels;
-using WebModels.Entities;
 using WebModels.RequestModels.AuthRequestModel;
-using WebModels.ResponseModels;
 
 namespace WebAPI.Controllers
 {
@@ -49,8 +45,7 @@ namespace WebAPI.Controllers
                 return BadRequest(res);
             }
         }
-
-        [Authorize]
+        [Authorize("Admin")]
         [HttpGet]
         public async Task<IActionResult> GetData()
         {

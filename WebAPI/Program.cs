@@ -26,6 +26,7 @@ options.SignIn.RequireConfirmedAccount = true)
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
+
 // config jwt authentication
 
 builder.Services.AddAuthentication(options=>

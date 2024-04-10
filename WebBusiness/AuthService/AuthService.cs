@@ -30,11 +30,11 @@ namespace WebBusiness.AuthService
             }
             if(await _userManager.CheckPasswordAsync(currentUser, userInfo.Password))
             {
-                var rolesUser = _userManager.GetRolesAsync(currentUser);
+                
                 var res = new LoginResponse
                 {
                     Message = "Đăng nhập thành công",
-                    Token = _tokenService.GenerateToken(currentUser),
+                    Token =await _tokenService.GenerateToken(currentUser),
                     IsSucceed = true
                 };
                 return res;

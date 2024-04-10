@@ -20,15 +20,15 @@ namespace WebModels
             },
             new IdentityRole
             {
-                Name = "User",
+                Name = "Manager",
                 ConcurrencyStamp = "2",
-                NormalizedName = "User",
+                NormalizedName = "Manager",
             },
             new IdentityRole
             {
-                Name = "Publisher",
+                Name = "Member",
                 ConcurrencyStamp = "3",
-                NormalizedName = "Publisher",
+                NormalizedName = "Member",
             });
         }
     }
