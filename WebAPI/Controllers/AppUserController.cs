@@ -1,29 +1,57 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using WebModels;
-using WebModels.Entities;
-using WebModels.ResponseModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using WebAPI.CustomAttribute;
+using WebBusiness.AuthService;
+using WebCommon.Constants;
+using WebModels.RequestModels.AuthRequestModel;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Constants.Controller.DEFAULT_ROUTE_CONTROLLER)]
     [ApiController]
     public class AppUserController : ControllerBase
     {
-        private AppDbContext _dbContext { get; set; }
-        public AppUserController(AppDbContext dbContext)
+        private readonly IAuthService _authService;
+        public AppUserController(IAuthService authService)
         {
-            _dbContext = dbContext;
+            _authService = authService;
         }
-        [HttpGet]
-        public List<UserResponseModelForLogIn> GetUser()
+      
+
+        [HttpPost]
+        public async Task<IActionResult> Register(UserModel userinfo)
         {
-            return _dbContext.ApplicationUser.Select(x=>new UserResponseModelForLogIn
+            var res = await _authService.Register(userinfo);
+            if(res.Succeeded)
             {
-                HoTen = x.HoTen,
-                UserName =x.UserName,
-                Id = x.Id
-            }).ToList();        
+                return Ok(res);
+            }
+            else
+            {
+                return BadRequest(res);
+            }
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginRequest userinfo)
+        {
+            var res = await _authService.Login(userinfo);
+            if (res.IsSucceed)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return BadRequest(res);
+            }
+        }
+        [Authorize("Admin")]
+        [HttpGet]
+        public async Task<IActionResult> GetData()
+        {
+            var x = 1 + 1;
+            return Ok(x);
+        }
+
     }
 }
